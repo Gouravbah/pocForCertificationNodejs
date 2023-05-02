@@ -8,28 +8,30 @@ router.get('/', (req, res) => {
     res.send(`hello server router`);
 })
 
-router.post('/register', (req, res) => {
-
+router.post('/register', async (req, res) => {
     const { name } = req.body;
     if (!name) {
-        return res.status(422).json({ error: 'name is a required field' })
+        return res.status(422).json({ error: 'Name is a Mandatory field' })
     }
 
-    User.findOne({ name: name }).then((userExist) => {
-        if (userExist) {
-            return res.status(422).json({ error: 'name alredy exist' })
+    try {
+        const checkExistingData = await User.findOne({ name: name });
+        if (checkExistingData) {
+            return res.status(422).json({ error: 'Name alredy exist' })
         }
         const user = new User(req.body);
 
-        user.save().then(() => {
-            return res.status(201).json({ message: 'Successfull' })
-        }).catch((err) => {
-            return res.status(500).json({ error: 'error' })
-        })
+        const userData = await user.save()
 
-    }).catch((err) => {
+        if (userData) {
+            return res.status(201).json({ message: 'Successfull Data Created' })
+        } else {
+            return res.status(500).json({ error: 'error' })
+        }
+
+    } catch (err) {
         console.log(err);
-    })
-})
+    }
+});
 
 module.exports = router;
