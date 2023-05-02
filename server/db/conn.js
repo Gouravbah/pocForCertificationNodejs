@@ -3,12 +3,9 @@ const DB = process.env.DB
 
 mongoose.connect(DB, {
     useNewUrlParser: true,
+    // useCreateIndex: true,
     useUnifiedTopology: true,
+    // useFindAndModify: false
 }).then(() => {
     console.log(`DB connected`);
-}).catch((err) => { console.log(`not connected`); });
-
-// {
-//     Author: Gourav Bahare,
-//     Use Of project: POC For Certification
-// }
+}).catch((err) => { console.log(`not connected`, err); });
