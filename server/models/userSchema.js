@@ -22,3 +22,8 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('USER', userSchema);
 
 module.exports = User;
+
+// {
+//     Author: Gourav Bahare,
+//     Use Of project: POC For Certification
+// }
