@@ -1,30 +1,20 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-dotenv.config({path: './config.env'});
+dotenv.config({ path: './config.env' });
 
-const DB = process.env.DB
+require('./db/conn');
 
-mongoose.connect(DB, {
-    useNewUrlParser: true,
-    // useCreateIndex: true,
-    useUnifiedTopology: true,
-    // useFindAndModify: false
-}).then(() => {
-    console.log(`DB connected`);
-}).catch((err) => { console.log(`not connected`); });
+app.use(express.json());
+
+app.use(require('./router/auth'));
 
 // middleWare
 const middleware = (req, res, next) => {
     console.log("hello middleware")
     next();
 }
-
-app.get('/', (req, res) => {
-    res.send(`hello server`);
-})
 
 app.get('/about', middleware, (req, res) => {
     console.log("hello about page")
